@@ -11,8 +11,8 @@ await seed(db, schema).refine((faker) => {
       columns: {
         name: faker.companyName(),
         description: faker.loremIpsum(),
-      }
-    }
+      },
+    },
   }
 })
 
