@@ -1,7 +1,7 @@
-import { z } from 'zod'
+import { z } from 'zod';
 
 const envSchema = z.object({
-  PORT: z.coerce.number()
-})
+  PORT: z.coerce.number(),
+});
 
-export const env = envSchema.parse(process.env)
+export const env = envSchema.parse(process.env);

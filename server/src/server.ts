@@ -22,6 +22,6 @@ app.get('/health', (req, res) => {
 })
 
 app.listen({ port: env.PORT }).then(() => {
-  console.log(`Port: ${env.PORT}`)
-  console.log('[HTTP] Server running')
-})
+  console.log(`Port: ${env.PORT}`);
+  console.log('[HTTP] Server running');
+});
