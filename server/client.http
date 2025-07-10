@@ -14,6 +14,7 @@ GET {{baseUrl}}/rooms
 
 
 ###
+
 # Create room
 POST {{baseUrl}}/rooms
 Content-Type: application/json
@@ -22,3 +23,9 @@ Content-Type: application/json
   "name": "Sala 01 de teste",
   "description": "Minha sala de teste"
 }
+
+###
+
+# Get room questions
+
+GET {{baseUrl}}/rooms/9422c286-0a5a-4436-8262-58fbd4ef4ae1/questions
