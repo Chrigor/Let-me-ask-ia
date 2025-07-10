@@ -14,8 +14,8 @@ await seed(db, schema).refine((faker) => {
       },
     },
     questions: {
-      count: 20
-    }
+      count: 20,
+    },
   }
 })
 
