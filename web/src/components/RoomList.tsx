@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight } from 'lucide-react'
 
-import { Badge } from './badge'
+import { Badge } from './ui/badge'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from './card'
+} from './ui/card'
 
 import { useRooms } from '@/http/useRooms'
 

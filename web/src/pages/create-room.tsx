@@ -1,4 +1,4 @@
-import { RoomList } from '@/components/ui/RoomList'
+import { RoomList } from '@/components/RoomList'
 
 export function CreateRoom() {
   return (
