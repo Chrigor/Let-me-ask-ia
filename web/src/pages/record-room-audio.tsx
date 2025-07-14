@@ -13,9 +13,11 @@ export function RecordRoomAudio() {
   async function stopRecording() {
     setIsRecording(false)
 
-    if (recorder.current && recorder.current.state !== 'inactive') {
-      recorder.current.stop()
+    if (!recorder.current || recorder.current.state === 'inactive') {
+      return
     }
+
+    recorder.current.stop()
   }
 
   async function startRecording() {
@@ -55,14 +57,14 @@ export function RecordRoomAudio() {
       }
 
       recorder.current.start()
-    } catch (error) {}
+    } catch (error) { }
   }
 
   if (isRecording) {
     return (
       <div className="h-screen flex flex-col gap-4 items-center justify-center">
         <Button onClick={stopRecording}>Pausar gravação</Button>
-        <p>Pausado</p>
+        <p>Gravando ...</p>
       </div>
     )
   }
@@ -70,7 +72,7 @@ export function RecordRoomAudio() {
   return (
     <div className="h-screen flex flex-col gap-4 items-center justify-center">
       <Button onClick={startRecording}>Gravar audio</Button>
-      <p>Gravando ...</p>
+      <p>Pausado</p>
     </div>
   )
 }
