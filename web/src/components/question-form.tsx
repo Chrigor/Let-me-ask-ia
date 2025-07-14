@@ -47,7 +47,7 @@ export function QuestionForm({ roomId }: QuestionFormProps) {
 
   async function handleCreateQuestion({ question }: CreateQuestionFormData) {
     // biome-ignore lint/suspicious/noConsole: dev
-    await createQuestion({ question, roomId})
+    await createQuestion({ question, roomId })
     await form.reset()
   }
 

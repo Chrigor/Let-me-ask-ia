@@ -8,13 +8,16 @@ export function useCreateQuestion() {
 
   return useMutation({
     mutationFn: async ({ roomId, question }: CreateQuestionRequest) => {
-      const response = await fetch(`http://localhost:3333/rooms/${roomId}/questions`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ question }),
-      })
+      const response = await fetch(
+        `http://localhost:3333/rooms/${roomId}/questions`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ question }),
+        }
+      )
       const result: CreateRoomResponse = await response.json()
       return result
     },
