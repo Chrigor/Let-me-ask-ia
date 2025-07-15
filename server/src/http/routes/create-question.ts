@@ -2,7 +2,7 @@ import type { FastifyPluginCallbackZod } from 'fastify-type-provider-zod'
 import { z } from 'zod/v4'
 import { db } from '../../db/connection.ts'
 import { schema } from '../../db/schema/index.ts'
-import { generateEmbbedings } from '../../services/gemini.ts'
+import { generateAnswer, generateEmbbedings } from '../../services/gemini.ts'
 import { and, eq, sql } from 'drizzle-orm'
 
 export const createQuestionRoute: FastifyPluginCallbackZod = (app) => {
@@ -40,21 +40,27 @@ export const createQuestionRoute: FastifyPluginCallbackZod = (app) => {
         )
         .limit(3)
 
-        return reply.status(201).send(chunks)
+      let answer: string | undefined = undefined
 
-      // const [insertedQuestion] = await db
-      //   .insert(schema.questions)
-      //   .values({
-      //     roomId,
-      //     question,
-      //   })
-      //   .returning()
+      if(chunks.length > 0) {
+        const transcriptions = chunks.map(chunk => chunk.transcription)
+        answer = await generateAnswer(question, transcriptions)
+      }
 
-      // if (!insertedQuestion) {
-      //   throw new Error('Failed to create question')
-      // }
+      const [insertedQuestion] = await db
+        .insert(schema.questions)
+        .values({
+          roomId,
+          question,
+          answer
+        })
+        .returning()
 
-      // return reply.status(201).send(insertedQuestion)
+      if (!insertedQuestion) {
+        throw new Error('Failed to create question')
+      }
+
+      return reply.status(201).send(insertedQuestion)
     }
   )
 }
