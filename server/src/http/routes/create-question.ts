@@ -24,11 +24,14 @@ export const createQuestionRoute: FastifyPluginCallbackZod = (app) => {
 
       const embeddings = await generateEmbbedings(question)
       const embeddingsAsString = `[${embeddings.join(',')}]`
-      const chunks = await db.select({
-        id: schema.audioChunks.id,
-        transcription: schema.audioChunks.transcription,
-        similarity: sql<number>`1 - (${schema.audioChunks.embeddings} <=> ${embeddingsAsString}::vector)`
-      }).from(schema.audioChunks)
+
+      const chunks = await db
+        .select({
+          id: schema.audioChunks.id,
+          transcription: schema.audioChunks.transcription,
+          similarity: sql<number>`1 - (${schema.audioChunks.embeddings} <=> ${embeddingsAsString}::vector)`,
+        })
+        .from(schema.audioChunks)
         .where(
           and(
             eq(schema.audioChunks.roomId, roomId),
@@ -42,8 +45,8 @@ export const createQuestionRoute: FastifyPluginCallbackZod = (app) => {
 
       let answer: string | undefined = undefined
 
-      if(chunks.length > 0) {
-        const transcriptions = chunks.map(chunk => chunk.transcription)
+      if (chunks.length > 0) {
+        const transcriptions = chunks.map((chunk) => chunk.transcription)
         answer = await generateAnswer(question, transcriptions)
       }
 
@@ -52,7 +55,7 @@ export const createQuestionRoute: FastifyPluginCallbackZod = (app) => {
         .values({
           roomId,
           question,
-          answer
+          answer,
         })
         .returning()
 

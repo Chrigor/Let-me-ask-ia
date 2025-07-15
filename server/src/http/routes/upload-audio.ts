@@ -11,7 +11,7 @@ export const uploadAudioRoute: FastifyPluginCallbackZod = (app) => {
       schema: {
         params: z.object({
           roomId: z.string(),
-        })
+        }),
       },
     },
     async (request, reply) => {
@@ -19,7 +19,7 @@ export const uploadAudioRoute: FastifyPluginCallbackZod = (app) => {
       // Streams
       const audio = await request.file()
 
-      if(!audio) {
+      if (!audio) {
         throw new Error('Audio is required')
       }
 
@@ -28,11 +28,14 @@ export const uploadAudioRoute: FastifyPluginCallbackZod = (app) => {
       const transcription = await transcribeAudio(audioAsBase64, audio.mimetype)
       const embeddings = await generateEmbbedings(transcription)
 
-      const result = await db.insert(schema.audioChunks).values({
-        roomId,
-        transcription,
-        embeddings
-      }).returning()
+      const result = await db
+        .insert(schema.audioChunks)
+        .values({
+          roomId,
+          transcription,
+          embeddings,
+        })
+        .returning()
 
       const chunk = result[0]
 

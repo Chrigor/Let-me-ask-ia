@@ -24,7 +24,10 @@ export function useCreateQuestion() {
     },
 
     onMutate({ question, roomId }) {
-      const questions = queryClient.getQueryData<GetRoomQuestionsResponse>(['get-questions', roomId])
+      const questions = queryClient.getQueryData<GetRoomQuestionsResponse>([
+        'get-questions',
+        roomId,
+      ])
       const questionsArray = questions ?? []
 
       const newQuestion = {
@@ -32,7 +35,7 @@ export function useCreateQuestion() {
         question,
         roomId,
         createdAt: new Date().toISOString(),
-        answer: undefined
+        answer: undefined,
       }
 
       queryClient.setQueryData<GetRoomQuestionsResponse>(
@@ -56,20 +59,20 @@ export function useCreateQuestion() {
       queryClient.setQueryData<GetRoomQuestionsResponse>(
         ['get-questions', roomId],
         (questions) => {
-          if(!questions) {
+          if (!questions) {
             return questions
           }
 
-          if(!context.newQuestion) {
+          if (!context.newQuestion) {
             return questions
           }
 
-          return questions.map(question => {
-            if(question.id === context.newQuestion.id) {
+          return questions.map((question) => {
+            if (question.id === context.newQuestion.id) {
               return {
                 ...question,
                 id: data.id,
-                answer: data.answer
+                answer: data.answer,
               }
             }
 

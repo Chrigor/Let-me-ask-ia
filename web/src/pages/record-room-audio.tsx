@@ -27,7 +27,7 @@ export function RecordRoomAudio() {
 
     recorder.current.stop()
 
-    if(intervalRef.current) {
+    if (intervalRef.current) {
       clearInterval(intervalRef.current)
     }
   }
@@ -36,10 +36,13 @@ export function RecordRoomAudio() {
     const formData = new FormData()
     formData.append('file', audio, 'audio.webm')
 
-    const response = await fetch(`http://localhost:3333/rooms/${params.roomId}/audio`, {
-      method: 'POST',
-      body: formData,
-    })
+    const response = await fetch(
+      `http://localhost:3333/rooms/${params.roomId}/audio`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    )
 
     const result = await response.json()
     console.log(result)
@@ -47,26 +50,26 @@ export function RecordRoomAudio() {
 
   function createRecorder(audio: MediaStream) {
     recorder.current = new MediaRecorder(audio, {
-        mimeType: 'audio/webm',
-        audioBitsPerSecond: 64_000,
-      })
+      mimeType: 'audio/webm',
+      audioBitsPerSecond: 64_000,
+    })
 
-      recorder.current.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          uploadAudio(event.data)
-        }
+    recorder.current.ondataavailable = (event) => {
+      if (event.data.size > 0) {
+        uploadAudio(event.data)
       }
+    }
 
-      recorder.current.onstart = () => {
-        console.log('comecou')
-      }
+    recorder.current.onstart = () => {
+      console.log('comecou')
+    }
 
-      recorder.current.onstop = () => {
-        console.log('parou')
-      }
+    recorder.current.onstop = () => {
+      console.log('parou')
+    }
 
-      recorder.current.start()
-  } 
+    recorder.current.start()
+  }
 
   async function startRecording() {
     if (!isRecordingSupported) {
@@ -87,12 +90,11 @@ export function RecordRoomAudio() {
 
       createRecorder(audio)
 
-
       intervalRef.current = setInterval(() => {
         recorder.current?.stop()
         createRecorder(audio)
       }, 5000)
-    } catch (error) { }
+    } catch (error) {}
   }
 
   if (isRecording) {

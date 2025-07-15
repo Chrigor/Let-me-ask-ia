@@ -38,7 +38,6 @@ interface QuestionFormProps {
 export function QuestionForm({ roomId }: QuestionFormProps) {
   const { mutateAsync: createQuestion } = useCreateQuestion()
 
-
   const form = useForm<CreateQuestionFormData>({
     resolver: zodResolver(createQuestionSchema),
     defaultValues: {
@@ -47,7 +46,6 @@ export function QuestionForm({ roomId }: QuestionFormProps) {
   })
 
   const { isSubmitting } = form.formState
-
 
   async function handleCreateQuestion({ question }: CreateQuestionFormData) {
     // biome-ignore lint/suspicious/noConsole: dev
