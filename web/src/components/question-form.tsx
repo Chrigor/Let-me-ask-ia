@@ -38,12 +38,16 @@ interface QuestionFormProps {
 export function QuestionForm({ roomId }: QuestionFormProps) {
   const { mutateAsync: createQuestion } = useCreateQuestion()
 
+
   const form = useForm<CreateQuestionFormData>({
     resolver: zodResolver(createQuestionSchema),
     defaultValues: {
       question: '',
     },
   })
+
+  const { isSubmitting } = form.formState
+
 
   async function handleCreateQuestion({ question }: CreateQuestionFormData) {
     // biome-ignore lint/suspicious/noConsole: dev
@@ -75,6 +79,7 @@ export function QuestionForm({ roomId }: QuestionFormProps) {
                     <Textarea
                       className="min-h-[100px]"
                       placeholder="O que você gostaria de saber?"
+                      disabled={isSubmitting}
                       {...field}
                     />
                   </FormControl>
@@ -83,7 +88,9 @@ export function QuestionForm({ roomId }: QuestionFormProps) {
               )}
             />
 
-            <Button type="submit">Enviar pergunta</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              Enviar pergunta
+            </Button>
           </form>
         </Form>
       </CardContent>
