@@ -73,8 +73,8 @@ export async function generateAnswer(question: string, transcriptions: string[])
     }]
   })
 
-  if (!response) {
-    throw new Error('falha ao gerar resposta pelo gemini')
+  if (!response.text) {
+    throw new Error('falha ao gerar resposta pelo Gemini')
   }
 
   return response.text
